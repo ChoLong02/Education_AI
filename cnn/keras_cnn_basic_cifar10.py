@@ -2,14 +2,16 @@
 ## KERAS를 사용한 CNN 모델 사용하기 ##
 ##  - CIFAR-10 데이터셋 사용        ##
 ######################################
+## 주의: CPU 사용자는 GPU 코드라인 주석후 사용하세요.
 
 import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import utils
-from tensorflow.keras import layers
-from tensorflow.keras import datasets
-from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
+import keras
+from keras import utils
+from keras import layers
+from keras import datasets
+from keras.callbacks import EarlyStopping
+from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
+from keras.utils.multi_gpu_utils import multi_gpu_model # Multi GPU 사용하기 위한 라이브러리
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -100,6 +102,9 @@ model = keras.Sequential([
 ])
 
 model.summary()
+
+# MULTI GPU 사용하기, CPU 사용시에는 주석
+model = multi_gpu_model(model, gpus=2)
 
 model.compile(
     loss='categorical_crossentropy',
